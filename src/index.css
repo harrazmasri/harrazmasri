@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: "Inter-Regular";
+    src: url("/fonts/Inter-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Auge-Trial-Black";
+    src: url("/fonts/Auge-Trial-Black.otf");
+}
+
+@font-face {
+    font-family: "Auge-Trial-Bold";
+    src: url("/fonts/Auge-Trial-Bold.otf");
+}
+
+@font-face {
+    font-family: "Auge-Trial-ExtraBlack";
+    src: url("/fonts/Auge-Trial-ExtraBlack.otf");
+}
+
+@font-face {
+    font-family: "Auge-Trial-ExtraBlackItalic";
+    src: url("/fonts/Auge-Trial-ExtraBlackItalic.otf");
+}
+
+@font-face {
+    font-family: "Auge-Trial-Light";
+    src: url("/fonts/Auge-Trial-Light.otf");
+}
+
+@font-face {
+    font-family: "Auge-Trial-LightItalic";
+    src: url("/fonts/Auge-Trial-LightItalic.otf");
+}
+
+@font-face {
+    font-family: "Auge-Trial-Regular";
+    src: url("/fonts/Auge-Trial-Regular.otf");
+}
