@@ -30,9 +30,18 @@
                 </div>
             </div>
             <div class="w-3/12">
-                
+                <div class="flex flex-col items-start justify-start gap-1">
+                    <h1 class="text-augeBlack tracking-tighter text-[1.6rem]">Account</h1>
+                    <p class="text-auge font-[700] text-[1rem]">Personal Details</p>
+                    <p class="text-auge font-[700] text-[1rem]">Inventory</p>
+                    <p @click="clearSession" class="cursor-pointer text-auge font-[700] text-[1rem]">Logout</p>
+                </div>
             </div>
         </div>
     </div>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const clearSession = () => {
+   localStorage.removeItem('token');
+} 
+</script>

@@ -3,6 +3,7 @@ import './style.css';
 import './index.css';
 import { createRouter, createWebHistory } from 'vue-router';
 import { Icon } from '@iconify/vue';
+import vue3GoogleLogin from 'vue3-google-login'
 
 import App from './App.vue';
 import Index from './view/Index.vue';
@@ -50,6 +51,11 @@ const router = createRouter({
 });
 
 app.use(router);
+app.use(vue3GoogleLogin, {
+  clientId: '20849050735-t5r8cdgql6qjpkdratddbcvi71mildrd.apps.googleusercontent.com',
+  // clientSecret: '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',
+  // redirectUri: '/auth/google/callback',
+});
 app.component('Icon', Icon);
 
 app.mount('#app');

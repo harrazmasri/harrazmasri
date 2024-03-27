@@ -45,16 +45,22 @@
                     
                     <div class="flex flex-row items-center justify-start gap-2">
                         <h1 class="font-augeBold text-white text-2xl tracking-wide">Comments</h1>
-                        <div class="bg-[rgb(30,30,30)] min-w-[1.9rem] h-[1.9rem] p-2 flex items-center justify-center text-[1.2rem] leading-[1rem] rounded-full text-white">6</div>
+                        <div v-if="postData.comment" class="bg-[rgb(30,30,30)] min-w-[1.9rem] h-[1.9rem] p-2 flex items-center justify-center text-[1.2rem] leading-[1rem] rounded-full text-white">
+                            {{ postData.comment.length + (postData.comment.map((commentData, commentIndex) => { return commentData.reply.length; }).reduce((accumulator, currentVal) => accumulator + currentVal, 0)) }}
+                        </div>
                     </div>
 
-                    <button class="flex justify-start items-center text-[rgb(200,200,200)] gap-1 leading-5"><Icon icon="mdi:chevron-down" />Newest</button>
+                    <select v-model="currentSort" class="w-[5rem] flex justify-start items-center text-[rgb(200,200,200)] gap-1 leading-5 bg-transparent border-none ring-0 outline-none">
+                        <option value="desc" class="bg-black">Latest</option>
+                        <option value="asc" class="bg-black">Oldest</option>
+                    </select>
                 </div>
 
-                <p class="flex justify-start items-center text-[rgb(200,200,200)] gap-1 text-sm leading-5 mb-3">Commenting as user12345</p>
+                <p v-if="authenticatedUserData" class="flex justify-start items-center text-[rgb(200,200,200)] gap-1 text-sm leading-5 mb-3">Commenting as {{ authenticatedUserData.username ?? '' }}</p>
                 
+
                 <div 
-                    v-for="index in 2"
+                    v-for="(comment, commentIndex) in postData.comment"
                     class=""
                 >
                     <div class="flex flex-col w-full h-fit items-center justify-center">
@@ -65,8 +71,8 @@
                                 </div>
                             </div>
                             <div class="w-full flex flex-col">
-                                <p class="text-white text-base tracking-wider font-[600] text-justify leading-5">John Doe</p>
-                                <p class="text-[rgb(200,200,200)] text-sm tracking-wider font-[400] text-justify leading-5">18:06 20/03/2023</p>
+                                <p class="text-white text-base tracking-wider font-[600] text-justify leading-5">{{ comment.user.username }}</p>
+                                <p class="text-[rgb(200,200,200)] text-sm tracking-wider font-[400] text-justify leading-5">{{ comment.created_at }}</p>
                             </div>
                         </div>
                         <div class="w-full flex flex-row gap-3 h-fit">
@@ -75,16 +81,16 @@
                             </div>
 
                             <div class="flex flex-col">
-                                <p class="text-white text-base tracking-wider font-[400] text-justify leading-5 mt-1">
-                                    When i need you, you weren't there for me.
+                                <p class="text-white text-base tracking-wider font-[400] text-justify leading-5 my-1 whitespace-pre">
+                                    {{ comment.description }}
                                 </p>
 
-                                <button class="mt-1 pb-5 flex justify-start items-center text-[rgb(200,200,200)] gap-1 text-sm leading-5"><Icon icon="mdi:reply" />reply</button>
+                                <button @click="currentSelectedComment=comment; commentDetails.comment_id=comment.id;" class="mt-1 pb-5 flex justify-start items-center text-[rgb(200,200,200)] gap-1 text-sm leading-5"><Icon icon="mdi:reply" />reply</button>
 
                                 <!-- reply -->
                                 <div class="w-full flex flex-col justify-start items-start">
                                     <div 
-                                        v-for="index in 2"
+                                        v-for="reply, replyIndex in comment.reply"
                                         class=""
                                     >
                                         <div class="flex flex-col w-full h-fit items-center justify-center">
@@ -95,21 +101,21 @@
                                                     </div>
                                                 </div>
                                                 <div class="w-full flex flex-col">
-                                                    <p class="text-white text-base tracking-wider font-[600] text-justify leading-5">John Doe</p>
-                                                    <p class="text-[rgb(200,200,200)] text-sm tracking-wider font-[400] text-justify leading-5">18:06 20/03/2023</p>
+                                                    <p class="text-white text-base tracking-wider font-[600] text-justify leading-5">{{ reply.user.username }}</p>
+                                                    <p class="text-[rgb(200,200,200)] text-sm tracking-wider font-[400] text-justify leading-5">{{ reply.created_at }}</p>
                                                 </div>
                                             </div>
                                             <div class="w-full flex flex-row gap-3 h-fit">
                                                 <div class="w-[3rem] flex justify-center">
-                                                    <div :class="index+1 == 2 ? 'bg-[rgb(50,50,50)]' : ''" class="w-[.12rem] h-full"></div>
+                                                    <div :class="replyIndex+1 != comment.reply.length ? 'bg-[rgb(50,50,50)]' : ''" class="w-[.12rem] h-full"></div>
                                                 </div>
 
                                                 <div class="flex flex-col">
-                                                    <p class="text-white text-base tracking-wider font-[400] text-justify leading-5 mt-1">
-                                                        When i need you, you weren't there for me.
+                                                    <p class="text-white text-base tracking-wider font-[400] text-justify leading-5 mt-1 whitespace-pre">
+                                                        {{ reply.description }}
                                                     </p>
                                                     
-                                                    <button class="mt-1 pb-5 flex justify-start items-center text-[rgb(200,200,200)] gap-1 text-sm leading-5"><Icon icon="mdi:reply" />reply</button>
+                                                    <button @click="currentSelectedComment=comment; commentDetails.comment_id=comment.id;" class="mt-1 pb-5 flex justify-start items-center text-[rgb(200,200,200)] gap-1 text-sm leading-5"><Icon icon="mdi:reply" />reply</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -120,16 +126,27 @@
                     </div>
                 </div>
 
-                <div class="w-full flex flex-row justify-start items-start">
+                <div v-if="authenticatedUserData" class="w-full h-fit flex flex-row justify-start items-center">
                     <div class="w-full border-[.15rem] rounded border-[rgb(200,200,200)] px-6 py-3">
-                        <p class="flex justify-start items-center text-[rgb(200,200,200)] gap-1 text-sm leading-5"><Icon icon="mdi:reply" />replying to John Doe</p>
-                        <input v-model="commentData.description" type="text" class="w-full  bg-transparent text-white pt-1 border-none outline-none ring-0 font-[400]" placeholder="Leave a comment...">
+                        <div v-if="currentSelectedComment" class="w-full flex justify-between items-center">
+                            <p class="flex justify-start items-center text-[rgb(200,200,200)] gap-1 text-sm leading-5"><Icon icon="mdi:reply" />replying to {{ currentSelectedComment.user.username }}</p>
+                            <button @click="currentSelectedComment=null; commentDetails.comment_id=''" class="text-gray-500 text-xs font-bold bg-[rgb(40,40,40)] p-0.5 rounded-full"><Icon icon="mdi:close" /></button>
+                        </div>
+                        <div contenteditable="plaintext-only" ref="commentField" type="text" class="w-full whitespace-pre min-h-[2rem] bg-transparent text-white pt-1 border-none outline-none ring-0 font-[400]"></div>
                     </div>
-                    <button @click="submitComment" class="w-[8rem] h-fit py-[1.6rem] text-white">Comment</button>
+                    <button @click="submitComment" class="w-[8rem] h-fit text-white">Comment</button>
                 </div>
 
-                <a href="http://127.0.0.1:8000/auth/google/redirect" class="text-sm text-white flex items-center gap-2 w-full border-[.15rem] rounded border-[rgb(200,200,200)] px-6 py-3 hover:bg-[rgb(20,20,20)]"><Icon icon="logos:google-icon" class="" /> Login with google</a>
-                <button @click="checkSession" class="text-sm text-white flex items-center gap-2 w-full border-[.15rem] rounded border-[rgb(200,200,200)] px-6 py-3 hover:bg-[rgb(20,20,20)]">Cehck session</button>
+                <!-- <a @click="login" class="text-sm text-white flex items-center gap-2 w-full border-[.15rem] rounded border-[rgb(200,200,200)] px-6 py-3 hover:bg-[rgb(20,20,20)]"><Icon icon="logos:google-icon" class="" /> Login with google</a> -->
+
+                <div v-if="!authenticatedUserData && postData.comment" :class="postData.comment.length != 0 ? '' : 'mt-3'" class="w-full">
+                    <GoogleLogin :callback="callback" auto-login prompt />
+                        <!-- <button class="text-sm text-white flex items-center gap-2 w-full border-[.15rem] rounded border-[rgb(200,200,200)] px-6 py-3 hover:bg-[rgb(20,20,20)]"><Icon icon="logos:google-icon" class="" /> Login with google</button> -->
+                    <!-- </GoogleLogin> -->
+                </div>
+
+                <!-- <button @click="checkSession" class="text-sm text-white flex items-center gap-2 w-full border-[.15rem] rounded border-[rgb(200,200,200)] px-6 py-3 hover:bg-[rgb(20,20,20)]">check session</button> -->
+                <!-- <button @click="clearSession" class="text-sm text-white flex items-center gap-2 w-full border-[.15rem] rounded border-[rgb(200,200,200)] px-6 py-3 hover:bg-[rgb(20,20,20)]">clear Session</button> -->
 
             </div>
         </div>
@@ -144,6 +161,7 @@ import Footer from '../components/layout/Footer.vue';
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import edjsHTML from 'editorjs-html';
+import { decodeCredential } from 'vue3-google-login';
 
 const fullScreenImage = ref(false);
 const edjsParser = edjsHTML();
@@ -151,14 +169,27 @@ const postData = ref('');
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const postId = urlParams.get('id');
-
-const commentData = ref({
-    postId: postId,
+const commentField = ref(null);
+const currentSelectedComment = ref(null);
+const currentSort = ref('desc');
+const commentDetails = ref({
     description: '',
-    userId: '',
+    user_id: '',
+    post_id: '',
+    comment_id: '',
 });
 
+const authenticatedUserData = ref(null);
+
 onMounted(() => {
+    if (localStorage.getItem('token') != null) {
+        checkSession();
+    }
+
+    fetchPost();
+});
+
+const fetchPost = () => {
     axios.post('http://127.0.0.1:8000/api/post/view', {
         id: postId,
     })
@@ -168,27 +199,66 @@ onMounted(() => {
         let parsedJSON = JSON.parse(item.body);
         item.body = item.body != null ? edjsParser.parse(parsedJSON).join('') : '';
         postData.value = response.data;
-    });
-});
-
-const submitComment = () => {
-    axios.post('http://127.0.0.1:8000/api/post/comment', {
-        id: postId,
-        
-    })
-    .then((response) => { 
-        console.log(response);
-        let item = response.data;
-        let parsedJSON = JSON.parse(item.body);
-        item.body = item.body != null ? edjsParser.parse(parsedJSON).join('') : '';
-        postData.value = response.data;
+        commentDetails.value.post_id = response.data.id;
     });
 }
 
-const checkSession = () => {
-    axios.get('http://127.0.0.1:8000/sanctum/csrf-cookie')
+const submitComment = () => {
+    commentDetails.value.description = commentField.value.textContent ?? '';
+    axios.post('http://127.0.0.1:8000/api/post/comment', commentDetails.value)
     .then((response) => { 
-        console.log(response);
+        console.log(response.data);
+        commentDetails.value.description = '';
+        commentField.value.textContent = '';
+        currentSelectedComment.value = null;
+    });
+
+    fetchPost();
+}
+
+// const callback: CallbackTypes.CodeResponseCallback = (response) => {
+const callback = (response) => {
+    const authCred = response;
+    const userDetails = decodeCredential(response.credential);
+    const JWTtoken = response.credential;
+    console.log(authCred, userDetails);
+
+    axios.post('http://127.0.0.1:8000/api/auth/google/login', {
+        credential: authCred.credential,
+        google_id: userDetails.sub,
+        full_name: userDetails.name,
+        email: userDetails.email,
+        profile_photo: userDetails.picture,
+    })
+    .then((res) => {
+        console.log(res);
+        localStorage.setItem('token', res.data.token);
+        checkSession();
+    })
+    .catch((err) => {
+        console.error(err);
+    });
+}
+
+const clearSession = () => {
+   localStorage.removeItem('token');
+    authenticatedUserData.value = null;
+} 
+
+const checkSession = () => {
+    const token = localStorage.getItem('token');
+    axios.get('http://127.0.0.1:8000/api/auth/google/session', {
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res) => {
+        console.log(res.data);
+        authenticatedUserData.value = res.data;
+        commentDetails.value.user_id = res.data.google_id;
+    })
+    .catch((err) => {
+        console.error(err);
     });
 }
 
