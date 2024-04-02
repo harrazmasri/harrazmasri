@@ -41,7 +41,7 @@
 
                 <div class="mt-7 w-full border-b-[.3rem] border-[rgb(50,50,50)]"></div>
 
-                <div class="mt-7 flex flex-row items-center justify-between gap-2 w-full mb-1">
+                <div class="mt-7 flex flex-row items-center justify-between gap-2 w-full mb-3">
                     
                     <div class="flex flex-row items-center justify-start gap-2">
                         <h1 class="font-augeBold text-white text-2xl tracking-wide">Comments</h1>
@@ -58,64 +58,67 @@
 
                 <p v-if="authenticatedUserData" class="flex justify-start items-center text-[rgb(200,200,200)] gap-1 text-sm leading-5 mb-3">Commenting as {{ authenticatedUserData.username ?? '' }}</p>
                 
-
-                <div 
-                    v-for="(comment, commentIndex) in postData.comment"
-                    class=""
-                >
-                    <div class="flex flex-col w-full h-fit items-center justify-center">
-                        <div class="w-full flex flex-row gap-3 justify-start items-center h-full">
-                            <div class="w-[3rem]">
-                                <div class="bg-[rgb(50,50,50)] rounded-full w-[3rem] h-[3rem] flex justify-center items-center">
-                                    <Icon icon="mdi:account" class="text-white text-xl" />
+                <div ref="scrollComponent">
+                    <div 
+                        v-for="(comment, commentIndex) in commentList"
+                        class=""
+                    >
+                        <div class="flex flex-col w-full h-fit items-center justify-center">
+                            <div class="w-full flex flex-row gap-3 justify-start items-center h-full">
+                                <div v-if="!comment.user.profile_photo" class="w-[3rem]">
+                                    <div class="bg-[rgb(50,50,50)] rounded-full w-[3rem] h-[3rem] flex justify-center items-center">
+                                        <Icon icon="mdi:account" class="text-white text-xl" />
+                                    </div>
+                                </div>
+                                <img v-else :src="comment.user.profile_photo" class="w-[3rem] h-[3rem] object-cover rounded-full" alt="">
+                                <div class="w-full flex flex-col">
+                                    <p class="text-white text-base tracking-wider font-[600] text-justify leading-5">{{ comment.user.username }}</p>
+                                    <p class="text-[rgb(200,200,200)] text-sm tracking-wider font-[400] text-justify leading-5">{{ comment.created_at }}</p>
                                 </div>
                             </div>
-                            <div class="w-full flex flex-col">
-                                <p class="text-white text-base tracking-wider font-[600] text-justify leading-5">{{ comment.user.username }}</p>
-                                <p class="text-[rgb(200,200,200)] text-sm tracking-wider font-[400] text-justify leading-5">{{ comment.created_at }}</p>
-                            </div>
-                        </div>
-                        <div class="w-full flex flex-row gap-3 h-fit">
-                            <div class="w-[3rem] flex justify-center">
-                                <div class="w-[.12rem] h-full bg-[rgb(50,50,50)]"></div>
-                            </div>
-
-                            <div class="flex flex-col">
-                                <p class="text-white text-base tracking-wider font-[400] text-justify leading-5 my-1 whitespace-pre">
-                                    {{ comment.description }}
-                                </p>
-
-                                <button @click="currentSelectedComment=comment; commentDetails.comment_id=comment.id;" class="mt-1 pb-5 flex justify-start items-center text-[rgb(200,200,200)] gap-1 text-sm leading-5"><Icon icon="mdi:reply" />reply</button>
-
-                                <!-- reply -->
-                                <div class="w-full flex flex-col justify-start items-start">
-                                    <div 
-                                        v-for="reply, replyIndex in comment.reply"
-                                        class=""
-                                    >
-                                        <div class="flex flex-col w-full h-fit items-center justify-center">
-                                            <div class="w-full flex flex-row gap-3 justify-start items-center h-full">
-                                                <div class="w-[3rem]">
-                                                    <div class="bg-[rgb(50,50,50)] rounded-full w-[3rem] h-[3rem] flex justify-center items-center">
-                                                        <Icon icon="mdi:account" class="text-white text-xl" />
+                            <div class="w-full flex flex-row gap-3 h-fit">
+                                <div class="w-[3rem] flex justify-center">
+                                    <div class="w-[.12rem] h-full bg-[rgb(50,50,50)]"></div>
+                                </div>
+    
+                                <div class="flex flex-col">
+                                    <p class="text-white text-base tracking-wider font-[400] text-justify leading-5 my-1 whitespace-pre">
+                                        {{ comment.description }}
+                                    </p>
+    
+                                    <button @click="currentSelectedComment=comment; commentDetails.comment_id=comment.id;" class="mt-1 pb-5 flex justify-start items-center text-[rgb(200,200,200)] gap-1 text-sm leading-5"><Icon icon="mdi:reply" />reply</button>
+    
+                                    <!-- reply -->
+                                    <div class="w-full flex flex-col justify-start items-start">
+                                        <div 
+                                            v-for="reply, replyIndex in comment.reply"
+                                            class=""
+                                        >
+                                            <div class="flex flex-col w-full h-fit items-center justify-center">
+                                                <div class="w-full flex flex-row gap-3 justify-start items-center h-full">
+                                                    <div v-if="!reply.user.profile_photo" class="w-[3rem]">
+                                                        <div class="bg-[rgb(50,50,50)] rounded-full w-[3rem] h-[3rem] flex justify-center items-center">
+                                                            <Icon icon="mdi:account" class="text-white text-xl" />
+                                                        </div>
+                                                    </div>
+                                                    <img v-else :src="reply.user.profile_photo" class="w-[3rem] h-[3rem] object-cover rounded-full" alt="">
+                                                    <div class="w-full flex flex-col">
+                                                        <p class="text-white text-base tracking-wider font-[600] text-justify leading-5">{{ reply.user.username }}</p>
+                                                        <p class="text-[rgb(200,200,200)] text-sm tracking-wider font-[400] text-justify leading-5">{{ reply.created_at }}</p>
                                                     </div>
                                                 </div>
-                                                <div class="w-full flex flex-col">
-                                                    <p class="text-white text-base tracking-wider font-[600] text-justify leading-5">{{ reply.user.username }}</p>
-                                                    <p class="text-[rgb(200,200,200)] text-sm tracking-wider font-[400] text-justify leading-5">{{ reply.created_at }}</p>
-                                                </div>
-                                            </div>
-                                            <div class="w-full flex flex-row gap-3 h-fit">
-                                                <div class="w-[3rem] flex justify-center">
-                                                    <div :class="replyIndex+1 != comment.reply.length ? 'bg-[rgb(50,50,50)]' : ''" class="w-[.12rem] h-full"></div>
-                                                </div>
-
-                                                <div class="flex flex-col">
-                                                    <p class="text-white text-base tracking-wider font-[400] text-justify leading-5 mt-1 whitespace-pre">
-                                                        {{ reply.description }}
-                                                    </p>
-                                                    
-                                                    <button @click="currentSelectedComment=comment; commentDetails.comment_id=comment.id;" class="mt-1 pb-5 flex justify-start items-center text-[rgb(200,200,200)] gap-1 text-sm leading-5"><Icon icon="mdi:reply" />reply</button>
+                                                <div class="w-full flex flex-row gap-3 h-fit">
+                                                    <div class="w-[3rem] flex justify-center">
+                                                        <div :class="replyIndex+1 != comment.reply.length ? 'bg-[rgb(50,50,50)]' : ''" class="w-[.12rem] h-full"></div>
+                                                    </div>
+    
+                                                    <div class="flex flex-col">
+                                                        <p class="text-white text-base tracking-wider font-[400] text-justify leading-5 mt-1 whitespace-pre">
+                                                            {{ reply.description }}
+                                                        </p>
+                                                        
+                                                        <button @click="currentSelectedComment=comment; commentDetails.comment_id=comment.id;" class="mt-1 pb-5 flex justify-start items-center text-[rgb(200,200,200)] gap-1 text-sm leading-5"><Icon icon="mdi:reply" />reply</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -158,7 +161,7 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue/dist/iconify.js';
 import Footer from '../components/layout/Footer.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import axios from 'axios';
 import edjsHTML from 'editorjs-html';
 import { decodeCredential } from 'vue3-google-login';
@@ -170,8 +173,14 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const postId = urlParams.get('id');
 const commentField = ref(null);
+const scrollComponent = ref(null);
 const currentSelectedComment = ref(null);
+const commentHasRequest = ref(false);
 const currentSort = ref('desc');
+
+const commentList = ref([]);
+const commentListOffset = ref(0);
+
 const commentDetails = ref({
     description: '',
     user_id: '',
@@ -187,7 +196,13 @@ onMounted(() => {
     }
 
     fetchPost();
+
+    window.addEventListener("scroll", handleScroll)
 });
+
+onUnmounted(() => {
+    window.removeEventListener("scroll", handleScroll)
+})
 
 const fetchPost = () => {
     axios.post('http://127.0.0.1:8000/api/post/view', {
@@ -199,7 +214,34 @@ const fetchPost = () => {
         let parsedJSON = JSON.parse(item.body);
         item.body = item.body != null ? edjsParser.parse(parsedJSON).join('') : '';
         postData.value = response.data;
+        commentList.value = postData.value.comment;
         commentDetails.value.post_id = response.data.id;
+    });
+}
+
+const handleScroll = (e) => {
+    let element = scrollComponent.value;
+    
+    if (element.getBoundingClientRect().bottom < window.innerHeight && !commentHasRequest.value) {
+        commentListOffset.value += 5;
+
+        fetchMoreComments();
+
+        commentHasRequest.value = true;
+        setTimeout(() => {
+            commentHasRequest.value = false;
+        }, 1000);
+    }
+}
+
+const fetchMoreComments = () => {
+    axios.post('http://127.0.0.1:8000/api/post/fetch-comment', { 
+        offSet: commentListOffset.value,
+        postId: postData.value.id,
+    })
+    .then((response) => {
+        console.log(response.data);
+        commentList.value = [...commentList.value, ...response.data];
     });
 }
 

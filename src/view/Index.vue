@@ -30,7 +30,7 @@
         class="border-none border-white w-[calc(100%-2rem)] h-[calc(100vh-12rem)] absolute flex items-center justify-center overflow-hidden mt-[6rem] ml-[-5rem]"
         style="transform: perspective(60rem) rotateY(-10deg) rotateX(0deg);"
       >
-        <transition
+        <!-- <transition
           enter-from-class="opacity-0 -translate-x-[100vw]"
           enter-active-class="transition duration-[200ms] delay-[400ms]"
           enter-to-class="opacity-100 -translate-y-0"
@@ -39,7 +39,7 @@
           leave-to-class="opacity-0 translate-x-[100vw]"
         >
           <img v-if="chosenCard==0" src="/src/assets/images/me-pose.jpg" class="border-none border-green-500 w-10/12 aspect-video" alt="">
-        </transition>
+        </transition> -->
   
         <transition
           enter-from-class="opacity-0 -translate-x-[100vw]"
