@@ -8,7 +8,7 @@
                 </button>
             </div>
 
-            <div class="w-[40rem]">
+            <div class="lg:w-[40rem] md:w-[40rem] sm:w-full">
                 <div class="w-full flex flex-row justify-between items-end gap-1 mb-7">
                    <div class="flex flex-row gap-1"><p class="text-[rgb(180,180,180)] text-base"><Icon icon="mdi:account" /> </p><span class="text-white text-md leading-4">Harraz Masri</span></div>
                    <div class="flex flex-row gap-1"><p class="text-[rgb(180,180,180)] text-base"><Icon icon="mdi:calendar-blank" /> </p><span class="text-white text-md leading-4">{{ postData.formatted_created_at }}</span></div>
@@ -31,11 +31,11 @@
                 <div class="mt-10 w-fit flex flex-col justify-between items-start gap-1">
                     <p class="text-[rgb(180,180,180)] text-sm">share: </p>
                     <div class="flex flex-row gap-1 items-center">
-                        <Icon icon="mdi:facebook" class="text-white cursor-pointer  hover:opacity-80 text-2xl" />
-                        <Icon icon="mdi:twitter" class="text-white cursor-pointer  hover:opacity-80 text-2xl" />
-                        <Icon icon="mdi:instagram" class="text-white cursor-pointer  hover:opacity-80 text-2xl" />
-                        <Icon icon="mdi:whatsapp" class="text-white cursor-pointer  hover:opacity-80 text-2xl" />
-                        <Icon icon="mdi:link" class="text-white cursor-pointer  hover:opacity-80 text-2xl" />
+                        <Icon @click="share('facebook')" icon="mdi:facebook" class="text-white cursor-pointer  hover:opacity-80 text-2xl" />
+                        <!-- <Icon @click="share('twitter')" icon="mdi:twitter" class="text-white cursor-pointer  hover:opacity-80 text-2xl" /> -->
+                        <!-- <Icon  icon="mdi:instagram" class="text-white cursor-pointer  hover:opacity-80 text-2xl" /> -->
+                        <Icon @click="share('whatsapp')" icon="mdi:whatsapp" class="text-white cursor-pointer  hover:opacity-80 text-2xl" />
+                        <Icon @click="share()" icon="mdi:link" class="text-white cursor-pointer  hover:opacity-80 text-2xl" />
                     </div>
                 </div>
 
@@ -50,7 +50,7 @@
                         </div>
                     </div>
 
-                    <select v-model="currentSort" class="w-[5rem] flex justify-start items-center text-[rgb(200,200,200)] gap-1 leading-5 bg-transparent border-none ring-0 outline-none">
+                    <select v-model="currentSort" @change="fetchPost()" class="w-[5rem] flex justify-start items-center cursor-pointer text-[rgb(200,200,200)] gap-1 leading-5 bg-transparent border-none ring-0 outline-none">
                         <option value="desc" class="bg-black">Latest</option>
                         <option value="asc" class="bg-black">Oldest</option>
                     </select>
@@ -207,6 +207,7 @@ onUnmounted(() => {
 const fetchPost = () => {
     axios.post('http://127.0.0.1:8000/api/post/view', {
         id: postId,
+        filter_sort: currentSort.value,
     })
     .then((response) => { 
         console.log(response);
@@ -303,6 +304,51 @@ const checkSession = () => {
         console.error(err);
     });
 }
+
+const share = (platform) => {
+    const currentUrl = window.location.href;
+    let mediaUrl = '';
+    let message = 'Read more on this link below.';
+
+    if (platform) {
+        if (platform === 'facebook') {
+            mediaUrl = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
+        // } else if (platform === 'twitter') {
+        //     mediaUrl = `http://x.com/share?text=Check%20out%20this%20post%20via%20harrazmasri%20official%website%20->%20${currentUrl}`;
+        } else if (platform === 'whatsapp') {
+            mediaUrl = `https://api.whatsapp.com/send?text=Check%20out%20this%20post%20via%20harrazmasri%20official%website%20->%20${currentUrl}`;
+        }
+        window.open(mediaUrl, '_blank');
+    }
+    else {
+        if (navigator.share && navigator.canShare({})) {
+            navigator.share({
+                title: postData.title,
+                text: 'Read more on this link below.',
+                url: currentUrl,
+            })
+                .then(() => console.log('Post shared'))
+                .catch((err) => console.error('Error sharing: ' + err));
+        } else {
+            const storage = document.createElement('textarea');
+            storage.value = message;
+            document.body.appendChild(storage);
+            storage.select();
+            storage.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+            document.body.removeChild(storage);
+    
+            // Use Clipboard API for modern browsers
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(currentUrl)
+                .then(() => {
+                    console.log('Message copied to clipboard');
+                })
+                .catch((err) => console.error('Error copying to clipboard: ' + err));
+            }
+        }
+    }
+};
 
 </script>
 

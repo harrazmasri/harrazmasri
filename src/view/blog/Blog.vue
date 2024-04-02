@@ -1,11 +1,11 @@
 <template> 
     <div class="w-full h-fit min-h-screen bg-black flex flex-col items-center font-auge text-white">
-        <Header></Header>
+        <Header class="lg:block md:block sm:hidden"></Header>
 
-        <div class="flex items-center justify-between w-full px-6 mt-[2.5rem]">
-            <div class="flex items-center gap-2">
-                <p>Filter: </p>
-                <input @keydown="fetchData(currentUrl)" type="text" v-model="filterSearch" class="border-b bg-black py-1 px-1 text-sm outline-0 ring-0 w-60">
+        <div class="flex lg:flex-row md:flex-row sm:flex-col lg:gap-0 md:gap-0 sm:gap-5 items-center justify-between w-full px-6 mt-[2.5rem] mb-7">
+            <div class="flex border border-gray-400 rounded items-center gap-2 px-3 py-3 lg:w-60 md:w-60 sm:w-full">
+                <Icon icon="mdi:search" class="text-white text-xl" />
+                <input @keydown="fetchData(currentUrl)" type="text" v-model="filterSearch" class="bg-black rounded text-sm outline-0 ring-0 w-full" placeholder="Search a title...">
             </div>
             <div class="flex items-center gap-2">
                 <p>Sort By: </p>
@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div class="w-full max-w-[1440px] h-fit flex-grow grid grid-cols-4 gap-5 pt-[1rem] pb-[3rem] px-6">
+        <div class="w-full max-w-[1440px] h-fit flex-grow grid lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-1 gap-5 pt-[1rem] pb-[3rem] px-6">
 
             <div
                 v-if="catalog.length != 0"
@@ -28,8 +28,9 @@
             >
                 <img v-if="data.thumbnail" class="bg-gray-500 w-full max-w-[500px] object-cover aspect-[4/3] mb-3" :src="data.thumbnail.name" />
                 <div v-else class="bg-gray-500 w-full aspect-[4/3] mb-3"></div>
-                <h1 class="text-xl tracking-tighter font-auge font-[700] mb-1">{{ data.title }}</h1>
-                <p class="h-12 text-ellipsis overflow-hidden" v-html="data.body"></p>
+                <h1 class="text-xl tracking-tighter font-auge font-[700]">{{ data.title }}</h1>
+                <div class="max-h-12 text-ellipsis overflow-hidden" v-html="data.body"></div>
+                <p class="text-gray-400 font-semibold text-xs">{{ data.formatted_created_at }}</p>
             </div>
 
         </div>

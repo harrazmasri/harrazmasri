@@ -19,7 +19,7 @@
                     </div>
                     <div class="mb-3 w-full">
                         <p class="text-sm mb-1 text-gray-200">Logout</p>
-                        <button @click="clearSession" class="border bg-black rounded py-2 px-3 w-[20rem] text-sm flex gap-3 items-center justify-center"><Icon icon="mdi:logout" /> Logout</button>
+                        <button @click="clearSession" class="border bg-black hover:bg-[rgb(20,20,20)] transition-colors rounded py-2 px-3 w-[20rem] text-sm flex gap-3 items-center justify-center"><Icon icon="mdi:logout" /> Logout</button>
                     </div>
                 </div>
             </div>
