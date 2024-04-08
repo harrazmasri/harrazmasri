@@ -11,14 +11,14 @@
     @wheel="detectScroll()"  
   >
     <div class="relative w-[1440px] h-screen overflow-clip">
-      <div class="select-none animate-bounce absolute w-full top-[2rem] flex justify-center">
+      <div v-show="!isMobile" class="select-none animate-bounce absolute w-full top-[2rem] flex justify-center">
         <div class="relative flex flex-col justify-center items-center text-white">
           <Icon icon="fluent-mdl2:chevron-up" class="" />
           <p>scroll to previous card</p>
         </div>
       </div>
   
-      <div class="select-none animate-bounce absolute w-full bottom-[2rem] flex justify-center">
+      <div v-show="!isMobile" class="select-none animate-bounce absolute w-full bottom-[2rem] flex justify-center">
         <div class="relative flex flex-col justify-center items-center text-white">
           <p>scroll to next card</p>
           <Icon icon="fluent-mdl2:chevron-down" class="" />
@@ -30,7 +30,7 @@
         class="border-none border-white w-[calc(100%-2rem)] h-[calc(100vh-12rem)] absolute flex items-center justify-center overflow-hidden mt-[6rem] ml-[-5rem]"
         style="transform: perspective(60rem) rotateY(-10deg) rotateX(0deg);"
       >
-        <!-- <transition
+        <transition
           enter-from-class="opacity-0 -translate-x-[100vw]"
           enter-active-class="transition duration-[200ms] delay-[400ms]"
           enter-to-class="opacity-100 -translate-y-0"
@@ -39,7 +39,7 @@
           leave-to-class="opacity-0 translate-x-[100vw]"
         >
           <img v-if="chosenCard==0" src="/src/assets/images/me-pose.jpg" class="border-none border-green-500 w-10/12 aspect-video" alt="">
-        </transition> -->
+        </transition>
   
         <transition
           enter-from-class="opacity-0 -translate-x-[100vw]"
@@ -64,7 +64,12 @@
           leave-active-class="transition duration-[200ms]"
           leave-to-class="opacity-0 translate-x-[100vw]"
         >
-          <img v-if="chosenCard==2" src="/src/assets/images/gallery.jpg" class="border-none border-green-500 w-10/12 aspect-video" alt="">
+          <div v-if="chosenCard==2" class="bg-black w-10/12 aspect-video">
+            <div class="w-[1920px] h-[1080px] max-w-full max-h-full flex items-end">
+              <h1 class="font-augeLightItalic tracking-wide text-[4rem] text-[rgb(170,170,170)]">coming soon.</h1>
+            </div>
+          </div>
+          <!-- <img v-if="chosenCard==2" src="/src/assets/images/gallery.jpg" class="border-none border-green-500 w-10/12 aspect-video" alt=""> -->
         </transition>
   
         <transition
@@ -76,8 +81,13 @@
           leave-to-class="opacity-0 translate-x-[100vw]"
         >
           <div v-if="chosenCard==3" class="bg-black w-10/12 aspect-video">
-            <div class="w-[1920px] h-[1080px] max-w-full max-h-full"></div>
+            <div class="w-[1920px] h-[1080px] max-w-full max-h-full flex items-end">
+              <h1 class="font-augeLightItalic tracking-wide text-[4rem] text-[rgb(170,170,170)]">coming soon.</h1>
+            </div>
           </div>
+          <!-- <div v-if="chosenCard==3" class="bg-black w-10/12 aspect-video">
+            <div class="w-[1920px] h-[1080px] max-w-full max-h-full"></div>
+          </div> -->
         </transition>
   
         <transition
@@ -88,34 +98,40 @@
           leave-active-class="transition duration-[200ms]"
           leave-to-class="opacity-0 translate-x-[100vw]"
         >
-          <div v-if="chosenCard==4" class="bg-red-900 w-10/12 aspect-video">
-            <div class="w-[1920px] h-[1080px] max-w-full max-h-full`"></div>
+          <div v-if="chosenCard==4" class="bg-black w-10/12 aspect-video">
+            <div class="w-[1920px] h-[1080px] max-w-full max-h-full flex items-end">
+              <h1 class="font-augeLightItalic tracking-wide text-[4rem] text-[rgb(170,170,170)]">coming soon.</h1>
+            </div>
           </div>
+          <!-- <div v-if="chosenCard==4" class="bg-red-900 w-10/12 aspect-video">
+            <div class="w-[1920px] h-[1080px] max-w-full max-h-full`"></div>
+          </div> -->
         </transition>
       </div>
     
-    
+      <!-- class="border-none border-white px-20 flex flex-col justify-center w-full h-screen overflow-y-clip text-white py-12" -->
       <div 
-        class="border-none border-white px-20 flex flex-col justify-center w-full h-screen overflow-y-clip text-white py-12"
-        :class="initialState ? 'items-center' : 'items-end'"
+        class="border-none border-white flex flex-col justify-center w-full h-screen overflow-y-clip text-white py-12"
+        :class="initialState && !isMobile ? 'items-center' : 'items-end'"
       >
         <div 
-          class="border-none border-white w-1/2 max-h-[calc(100vh-6rem)] overflow-clip flex flex-col h-fit items-center gap-5 select-none"
-          :class="initialState ? 'text-center duration-[300ms]' : 'text-left duration-[300ms]'"
-          :style="!initialState ? 'transform: perspective(60rem) rotateY(-10deg) rotateX(0deg);' : 'transform: perspective(60rem) rotateY(0deg) rotateX(0deg);'"
+          class="border-none border-white w-1/2 md:w-1/2 sm:w-full max-h-[calc(100vh-6rem)] overflow-clip flex flex-col h-fit items-center gap-5 select-none"
+          :class="initialState && !isMobile ? 'text-center duration-[300ms]' : 'text-left duration-[300ms]'"
+          :style="!initialState && !isMobile ? 'transform: perspective(60rem) rotateY(-10deg) rotateX(0deg);' : 'transform: perspective(60rem) rotateY(0deg) rotateX(0deg);'"
         >
     
           <div
             v-for="card, index in cardContents"
-            @click="card.link != null ? $router.push(card.link) : triggerComponent(card.component)"
-            class="bg-gradient-to-br from-[rgb(120,120,120)] to-[rgb(90,90,90)] border border-[rgb(130,130,130)] "
+
+            @click="card.link != null && !card.disabled ? $router.push(card.link) : triggerComponent(card.component)"
+            class="bg-gradient-to-br from-[rgb(120,120,120)] to-[rgb(90,90,90)] w-fit border border-[rgb(130,130,130)] "
           >
-            <div :style="initialState ? 'width:33rem; height:7rem' : 'width: '+ (33 - (33 * ((index*10)/100))) +'rem; height: '+ (7 - (7 * ((index*10)/100))) +'rem;'">
+            <div :style="initialState && !isMobile ? 'width:33rem; height:7rem' : initialState && isMobile ? 'width:20rem; height:7rem' : 'width: '+ (33 - (33 * ((index*10)/100))) +'rem; height: '+ (7 - (7 * ((index*10)/100))) +'rem;'">
               <p
                 @mouseenter="changeCard(index)"
-                :style="initialState ? 'font-size:6rem; line-height:7rem; text-shadow: .1rem .1rem .5rem rgba(255,255,255,1);' : 'font-size: '+ (6 - (6 * ((index * 10) / 100))) +'rem; line-height:'+ (7 - (7 * ((index * 10) / 100))) +'rem; text-shadow: .1rem .1rem .5rem rgba(255,255,255,1);'"
-                class="whitespace-nowrap text-ellipsis overflow-hidden tracking-tighter font-augeBold hover:cursor-pointer hover:scale-[1.2] duration-100"
-                :class="chosenCard==index ? 'scale-[1.2]' : 'scale-[1]'"
+                :style="initialState && !isMobile ? 'font-size:6rem; line-height:7rem; text-shadow: .1rem .1rem .5rem rgba(255,255,255,1);' : initialState && isMobile ? 'text-align: center; font-size:4rem; line-height:7rem; text-shadow: .1rem .1rem .5rem rgba(255,255,255,1);' : 'font-size: '+ (6 - (6 * ((index * 10) / 100))) +'rem; line-height:'+ (7 - (7 * ((index * 10) / 100))) +'rem; text-shadow: .1rem .1rem .5rem rgba(255,255,255,1);'"
+                class="whitespace-nowrap text-ellipsis overflow-hidden tracking-tighter font-augeBold hover:cursor-pointer duration-100"
+                :class="chosenCard==index && !card.disabled ? 'scale-[1.2] hover:scale-[1.2]' : card.disabled ? 'opacity-50' : 'scale-[1]'"
               >{{ card.title }}</p>
             </div>
           </div>
@@ -144,6 +160,7 @@
 import { ref, onMounted } from 'vue';
 import About from './components/About.vue';
 
+const isMobile = ref(false);
 const initialState = ref(true);
 const chosenCard = ref(-1);
 const aboutComponent = ref(false);
@@ -155,6 +172,7 @@ const cardContents = ref([
     link: null,
     component: 'about',
     image: '',
+    disabled: false,
   },
   {
     title: 'Products',
@@ -162,6 +180,7 @@ const cardContents = ref([
     link: 'product',
     component: null,
     image: '',
+    disabled: true,
   },
   {
     title: 'Gallery',
@@ -169,6 +188,7 @@ const cardContents = ref([
     link: 'gallery',
     component: null,
     image: '',
+    disabled: true,
   },
   {
     title: 'Blog',
@@ -176,6 +196,7 @@ const cardContents = ref([
     link: 'blog',
     component: null,
     image: '',
+    disabled: true,
   },
   {
     title: 'Experiments',
@@ -183,6 +204,7 @@ const cardContents = ref([
     link: '',
     component: null,
     image: '',
+    disabled: true,
   },
 ]);
 
@@ -193,7 +215,7 @@ const triggerComponent = (component: String) => {
 }
 
 const changeCard = (index: number) => {
-  if (initialState.value) {
+  if (initialState.value && !isMobile.value) {
     initialState.value = false;
   }
   chosenCard.value = index;
@@ -212,6 +234,11 @@ const detectScroll = () => {
 }
 
 onMounted(() => {
+  console.log(window.innerWidth);
+  
+  if (window.innerWidth <= 450) {
+    isMobile.value = true;
+  } 
   // console.log('test');
   // chosenCard.value = 1;
 });
