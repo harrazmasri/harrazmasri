@@ -73,7 +73,7 @@
                     <div class="lg:w-10/12 md:w-10/12 sm:w-full flex flex-col items-start gap-4 ps-4">
                         <h3 class="sticky left-0 top-10 bg-[rgba(20,20,20,0.5)] py-3 backdrop-blur-sm w-fit pr-5 z-10 text-4xl font-augeBlack">iAttend</h3>
                         <div class="w-full items-start gap-4 flex lg:flex-row md:flex-row sm:flex-col">
-                            <img class="aspect-video lg:w-[20rem] md:w-[20rem] sm:w-[17rem] rounded" src="/src/assets/images/about/iattend.png" alt="">
+                            <img class="aspect-video lg:w-[25rem] md:w-[25rem] sm:w-[17rem] rounded" src="/src/assets/images/about/iattend.png" alt="">
                             <div>
                                 <p class="text-xl text-gray-300">A location tracking based attendance system made for my final year project. Comes with two platforms, one for the staffs (mobile) and the other for the office admin (web). This system improves the accuracy and validity one's attendance alongside more systematic approach on attendance management. This system is made with the integration of FlutterFlow and Codeigniter 3</p>
                             </div>
@@ -104,7 +104,7 @@
                     <div class="lg:w-10/12 md:w-10/12 sm:w-full flex flex-col items-start gap-4 ps-4">
                         <h3 class="sticky left-0 top-10 bg-[rgba(20,20,20,0.5)] py-3 backdrop-blur-sm w-fit pr-5 z-10 text-4xl font-augeBlack">PMS</h3>
                         <div class="w-full items-start gap-4 flex lg:flex-row md:flex-row sm:flex-col">
-                            <img class="aspect-video lg:w-[20rem] md:w-[20rem] sm:w-[17rem] rounded" src="/src/assets/images/about/pms.png" alt="">
+                            <img class="aspect-video lg:w-[25rem] md:w-[25rem] sm:w-[17rem] rounded" src="/src/assets/images/about/pms.png" alt="">
                             <div>
                                 <p class="text-xl text-gray-300">Stands for Project Management System built solely for <a class="text-white underline" target="_blank" href="https://maps.app.goo.gl/ou12wZ1Tivtdfsy88">Rekasawang PVT. LTD.</a> management. It is an internal system used by Rekasawang's staffs to keep in track on projects, customers, and other web services configuration.</p>
                             </div>
@@ -124,9 +124,9 @@
                     <div class="lg:w-10/12 md:w-10/12 sm:w-full flex flex-col items-start gap-4 ps-4">
                         <h3 class="sticky left-0 top-10 bg-[rgba(20,20,20,0.5)] py-3 backdrop-blur-sm w-fit pr-5 z-10 text-4xl font-augeBlack flex items-center gap-2">Jom Menyumbang (WIP)</h3>
                         <div class="w-full items-start gap-4 flex lg:flex-row md:flex-row sm:flex-col">
-                            <img class="aspect-video lg:w-[20rem] md:w-[20rem] sm:w-[17rem] rounded" src="/src/assets/images/about/jm.png" alt="">
+                            <img class="aspect-video lg:w-[25rem] md:w-[25rem] sm:w-[17rem] rounded" src="/src/assets/images/about/jm.png" alt="">
                             <div>
-                                <p class="text-xl text-gray-300">A crowdfund system for the NGO Aman Palestin in support for Palestinian conflicts. The development is still in progress and soon will be published. This system has an abundant of styling elements and complete responsive design.</p>
+                                <p class="text-xl text-gray-300">A crowdfund system by <a class="text-white underline" target="_blank" href="https://maps.app.goo.gl/ou12wZ1Tivtdfsy88">Rekasawang PVT. LTD.</a> for the NGO Aman Palestin in support for Palestinian conflicts. The development is still in progress and soon will be published. This system has an abundant of styling elements and complete responsive designs and a lot of features.</p>
                             </div>
                         </div>
                         <div>
@@ -147,7 +147,7 @@
                     <div class="lg:w-10/12 md:w-10/12 sm:w-full flex flex-col items-start gap-4 ps-4">
                         <h3 class="sticky left-0 top-10 bg-[rgba(20,20,20,0.5)] py-3 backdrop-blur-sm w-fit pr-5 z-10 text-4xl font-augeBlack flex items-center gap-2">Nohad (WIP)</h3>
                         <div class="w-full items-start gap-4 flex lg:flex-row md:flex-row sm:flex-col">
-                            <img class="aspect-video lg:w-[20rem] md:w-[20rem] sm:w-[17rem] rounded" src="/src/assets/images/about/nohad.png" alt="">
+                            <img class="aspect-video lg:w-[25rem] md:w-[25rem] sm:w-[17rem] rounded" src="/src/assets/images/about/nohad.png" alt="">
                             <div>
                                 <p class="text-xl text-gray-300">An internal management system for the printing company Nohad. This system allows their agents to create quotations, orders and payment. Then the Nohad system administrators will be able to view list of orders and update processing status and make a delivery.</p>
                             </div>
