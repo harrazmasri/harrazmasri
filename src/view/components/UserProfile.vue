@@ -32,7 +32,15 @@ import { Icon } from '@iconify/vue/dist/iconify.js';
 import { ref, onMounted, defineEmits } from 'vue';
 import axios from 'axios';
 
-const authenticatedUserData = ref(null);
+// const authenticatedUserData = ref({
+//     username: '',
+// });
+interface UserData {
+    username: string;
+    // Add other properties if needed
+}
+
+const authenticatedUserData = ref<UserData | null>(null);
 const emit = defineEmits();
 
 const profileData = ref({
@@ -61,7 +69,7 @@ const checkSession = () => {
     }).then((res) => {
         console.log(res.data);
         authenticatedUserData.value = res.data;
-        profileData.value.username = authenticatedUserData.value.username;
+        profileData.value.username = authenticatedUserData.value?.username ?? '';
     })
     .catch((err) => {
         console.error(err);

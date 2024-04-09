@@ -22,7 +22,7 @@
 
             <div
                 v-if="catalog.length != 0"
-                v-for="data, index in catalog"
+                v-for="data in catalog"
                 class="cursor-pointer transition-all border-[0.15rem] border-black hover:border-gray-300 hover:scale-[1] scale-[0.98] p-7 h-fit"
                 @click="$router.push({ path:'/blog/page', query: { id: data.id } })"
             >
@@ -60,13 +60,28 @@ import { onMounted, ref } from 'vue';
 import edjsHTML from 'editorjs-html';
 import axios from 'axios';
 
+interface BlogData {
+    id: number;
+    thumbnail?: { name: string };
+    title: string;
+    body: string;
+    formatted_created_at: string;
+}
+
+interface LinkData {
+    url: string;
+    label: string;
+}
+
 const edjsParser = edjsHTML();
-const catalog = ref([]);
+const catalog = ref<BlogData[]>([]);
+// const catalog = ref([]);
 const current_page = ref(null);
 const last_page = ref(null);
 const total = ref(null);
 const per_page = ref(null);
-const links = ref([]);
+const links = ref<LinkData[]>([]);
+// const links = ref([]);
 
 const currentUrl = ref('http://127.0.0.1:8000/api/post/catalog');
 
@@ -77,7 +92,7 @@ onMounted(() => {
     fetchData(currentUrl.value);
 });
 
-const fetchData = (url) => {
+const fetchData = (url: string) => {
     axios.post(url, {
         filter_search: filterSearch.value,
         filter_sort: filterSort.value,
@@ -92,7 +107,7 @@ const fetchData = (url) => {
         per_page.value = response.data.per_page;
 
         if (Array.isArray(response.data.data)) {
-            response.data.data.forEach((item) => {
+            response.data.data.forEach((item: { body: string }) => {
                 let parsedJSON = JSON.parse(item.body);
                 item.body = item.body != null ? edjsParser.parse(parsedJSON).join('') : '';
             });

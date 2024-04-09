@@ -46,7 +46,12 @@ import UserProfile from '../UserProfile.vue';
 import axios from 'axios';
 import { decodeCredential } from 'vue3-google-login';
 
-const authenticatedUserData = ref(null);
+interface AuthenticatedUser {
+    username: string,
+    profile_photo: string,
+}
+const authenticatedUserData = ref<AuthenticatedUser | null>(null);
+// const authenticatedUserData = ref(null);
 const settingModalActive = ref(false);
 
 onMounted(() => {
@@ -57,7 +62,7 @@ onMounted(() => {
 
 });
 
-const closeModal = (data) => {
+const closeModal = (data: boolean) => {
     settingModalActive.value = data;
 }
 
@@ -65,10 +70,17 @@ const getUri = () => {
     return window.location.pathname;
 }
 
-const callback = (response) => {
+const callback = (response: { credential: string }) => {
     const authCred = response;
-    const userDetails = decodeCredential(response.credential);
-    const JWTtoken = response.credential;
+    interface UserDetails {
+        sub: string;
+        name: string;
+        email: string;
+        picture: string;
+    }
+    const userDetails = decodeCredential(response.credential) as UserDetails;
+    // const userDetails = decodeCredential(response.credential);
+    // const JWTtoken = response.credential;
     console.log(authCred, userDetails);
 
     axios.post('http://127.0.0.1:8000/api/auth/google/login', {

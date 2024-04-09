@@ -6,12 +6,15 @@
     <img src="/src/assets/images/noise.svg" alt="" class="w-full rotate-145">
   </div>
 
-  <div 
+  <!-- <div 
     class="w-screen flex justify-center bg-gradient-to-br from-[rgb(80,80,80)] to-[rgb(30,30,30)]"
     @wheel="detectScroll()"  
+  > -->
+  <div 
+    class="w-screen flex justify-center bg-gradient-to-br from-[rgb(80,80,80)] to-[rgb(30,30,30)]"
   >
     <div class="relative w-[1440px] h-screen overflow-clip">
-      <div v-show="!isMobile" class="select-none animate-bounce absolute w-full top-[2rem] flex justify-center">
+      <!-- <div v-show="!isMobile" class="select-none animate-bounce absolute w-full top-[2rem] flex justify-center">
         <div class="relative flex flex-col justify-center items-center text-white">
           <Icon icon="fluent-mdl2:chevron-up" class="" />
           <p>scroll to previous card</p>
@@ -23,7 +26,7 @@
           <p>scroll to next card</p>
           <Icon icon="fluent-mdl2:chevron-down" class="" />
         </div>
-      </div>
+      </div> -->
       
       <div 
         v-if="!initialState"
@@ -123,7 +126,7 @@
           <div
             v-for="card, index in cardContents"
 
-            @click="card.link != null && !card.disabled ? $router.push(card.link) : triggerComponent(card.component)"
+            @click="card.link !== null && !card.disabled ? $router.push(card.link) : card.component !== null ? triggerComponent(card.component) : null"
             class="bg-gradient-to-br from-[rgb(120,120,120)] to-[rgb(90,90,90)] w-fit border border-[rgb(130,130,130)] "
           >
             <div :style="initialState && !isMobile ? 'width:33rem; height:7rem' : initialState && isMobile ? 'width:20rem; height:7rem' : 'width: '+ (33 - (33 * ((index*10)/100))) +'rem; height: '+ (7 - (7 * ((index*10)/100))) +'rem;'">
@@ -221,17 +224,17 @@ const changeCard = (index: number) => {
   chosenCard.value = index;
 }
 
-const detectScroll = () => {
-  if (event.deltaY < 0) {
-    if (chosenCard.value > 0) {
-      chosenCard.value--;
-    }
-  } else if (event.deltaY > 0) {
-    if (chosenCard.value < 4) {
-      chosenCard.value++;
-    }
-  }
-}
+// const detectScroll = () => {
+//   if (event.deltaY < 0) {
+//     if (chosenCard.value > 0) {
+//       chosenCard.value--;
+//     }
+//   } else if (event.deltaY > 0) {
+//     if (chosenCard.value < 4) {
+//       chosenCard.value++;
+//     }
+//   }
+// }
 
 onMounted(() => {
   console.log(window.innerWidth);
