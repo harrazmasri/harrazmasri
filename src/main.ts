@@ -15,7 +15,7 @@ import ProductView from './view/product/View.vue';
 
 const app = createApp(App);
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/harrazmasri/'),
   routes: [
     { 
       path: '/', 
