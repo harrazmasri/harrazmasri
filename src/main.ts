@@ -18,7 +18,7 @@ const router = createRouter({
   history: createWebHistory('/harrazmasri/'),
   routes: [
     { 
-      path: '/', 
+      path: '/harrazmasri/', 
       component: Index,
       meta: { transition: 'slide-bottom' },
     },
