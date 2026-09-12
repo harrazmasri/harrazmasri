@@ -1,4 +1,4 @@
-(codepen.io/harrazmasri)[codepen.io/harrazmasri]
+[CodePen Profile](https://codepen.io/harrazmasri)
 
 # My Stacks
 ## Frontend
